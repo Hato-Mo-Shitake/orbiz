@@ -1,8 +1,125 @@
-/*
-
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
-
-If your plugin does not need CSS, delete this file.
-
+/* 
+orbiz
 */
+
+
+/* Button */
+.btn-atom.secondary:hover:not(:disabled) {
+    background-color: var(--interactive--hover) !important;
+}
+
+.btn-atom.primary:hover:not(:disabled) {
+    background-color: var(--interactive-accent-hover) !important;
+}
+
+.btn-atom.danger:hover:not(:disabled) {
+    background-color: rgba(var(--color-red-rgb), 0.8) !important;
+}
+
+.btn-atom.ghost:hover:not(:disabled) {
+    background-color: rgba(var(--mono-rgb-100), 0.1) !important;
+}
+
+.btn-atom.minimal:hover:not(:disabled) {
+    opacity: 0.7;
+}
+
+.btn-atom.minimal:active:not(:disabled) {
+    opacity: 0.5;
+}
+
+
+/* LinkText */
+.link-atom {
+    cursor: var(--cursor-link);
+    transition: all 0.1s ease-in-out;
+    text-decoration: var(--link-decoration);
+    font-weight: var(--link-weight);
+    text-decoration-thickness: var(--link-decoration-thickness);
+}
+
+.link-atom.is-resolved {
+    color: var(--link-color);
+}
+
+.link-atom.is-resolved:hover {
+    color: var(--link-color-hover);
+    text-decoration: var(--link-decoration-hover);
+}
+
+.link-atom.is-unresolved {
+    color: var(--link-unresolved-color);
+    opacity: var(--link-unresolved-opacity);
+    filter: var(--link-unresolved-filter);
+    text-decoration-style: var(--link-unresolved-decoration-style);
+    text-decoration-color: var(--link-unresolved-decoration-color);
+}
+
+.link-atom.is-external {
+    color: var(--link-external-color);
+    text-decoration: var(--link-external-decoration);
+}
+
+.link-atom.is-external:hover {
+    color: var(--link-external-decoration);
+    text-decoration: var(link-external-decoration);
+}
+
+
+/* TextInput */
+.text-input-atom:focus {
+    /* border-color: var(--interactive-accent) !important; */
+    border-color: 'var(--background-modifier-border)' !important;
+    box-shadow: 0 0 0 2px var(--background-modifier-border-focus);
+}
+
+.text-input-atom::placeholder {
+    color: var(--text-faint);
+}
+
+.text-input-atom:disabled {
+    background-color: var(--background-modifier-form-field-disabled);
+    opacity: var(--input-disabled-opacity);
+    cursor: not-allowed;
+}
+
+
+/* Pill */
+.pill-atom:hover {
+    color: var(--pill-color-hover);
+    background-color: var(--pill-background-hover);
+    border-color: var(--pill-border-color-hover);
+    text-decoration: var(--pill-decoration-hover);
+}
+
+.pill-atom-remove-button {
+    color: var(--pill-color-remove);
+    cursor: pointer;
+    margin-left: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.pill-atom-remove-button:hover {
+    color: var(--pill-color-remove-hover);
+}
+
+/* Spinner */
+.spinner-atom {
+    flex-shrink: 0;
+}
+
+@keyframes spinner-atom-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Menu-item */
+.menu-item-atom:hover {
+    background-color: var(--background-modifier-hover) !important;
+}

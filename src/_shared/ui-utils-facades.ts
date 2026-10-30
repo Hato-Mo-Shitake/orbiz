@@ -21,6 +21,10 @@ export class UiUtilsFacades {
         return this.__app;
     }
 
+    static setApp(app: App) {
+        this.__app = app;
+    }
+
     static alert(message: string) {
         const modal = new Modal(this._app);
         modal.setTitle("Error");

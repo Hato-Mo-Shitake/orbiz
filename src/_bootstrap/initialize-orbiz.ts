@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-imports -- bootstrap内は許可 */
 
 import { Modal, Plugin } from "obsidian";
+import { UiUtilsFacades } from "../_shared/ui-utils-facades";
 import { UtilsFacades } from "../_shared/utils-facades";
 import { ClockImpl } from "../infra/internal/impls/clock";
 import { IdGeneratorImpl } from "../infra/internal/impls/id-generator";
@@ -17,6 +18,7 @@ export async function initializeOrbiz(
             clock: new ClockImpl(),
             idGenerator: new IdGeneratorImpl(),
         });
+        UiUtilsFacades.setApp(plugin.app);
 
         const deps = await resolveDependencies(plugin);
 

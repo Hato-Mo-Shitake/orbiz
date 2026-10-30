@@ -35,7 +35,7 @@ export async function updateNoteMetadata(
     const callback = async () => {
         const commitStack: (Commit | AsyncCommit)[] = [];
 
-        // 登録時の循環参照を検知するのは一旦置きで。SearchNoteの際に検知はする。
+        // NOTE: 登録時の循環参照を検知するのは一旦置きで。SearchNoteの際に検知はする。
 
         // note作成
         const newNoteEntry = await createNewAnyNoteEntry(
@@ -46,7 +46,7 @@ export async function updateNoteMetadata(
         const note = AnyNoteDS.constructNote(newNoteEntry);
         const { commit } = await upsertNote(note, deps);
 
-        // 本来こういう処理は、Commandが知るべきではなく、
+        // NOTE: 本来こういう処理は、Commandが知るべきではなく、
         // ストア側がCommandの実行を感知して実行するべきな気がするけど、コミットの順番とか状態の一貫性を保つという理由で一旦この運用
         // Commandをクラスにして、beforeHandlers, afterHandlers みたいなフィールドを持つようにすれば。
         // 外部からそこにコミットコールバックを登録して、現状と同じ処理を保ったまま、イベント駆動っぽいことができるし
@@ -96,7 +96,7 @@ async function createNewAnyNoteEntry(
         });
     }
 
-    // この処理微妙かも、ちゃんとkind分岐して、型通りに組み立てた方がいい。
+    // WARNING: この処理微妙かも、ちゃんとkind分岐して、型通りに組み立てた方がいい。
     const requestMetadata = request.metadata;
     const newMetadata: Record<string, unknown> = {};
 

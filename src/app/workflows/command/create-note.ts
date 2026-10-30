@@ -45,13 +45,13 @@ export async function createNote(
         const note = AnyNoteDS.constructNote(newNoteEntry);
 
 
-        // ここ、本当は実体を直接読み取りたいけど、一旦こうするしかない。
+        // NOTE: ここ、本当は実体を直接読み取りたいけど、一旦パフォーマンス重視でこう。
         const existingNoteIdAsSameName = noteIndexStore.findIdByName(note.name);
         if (existingNoteIdAsSameName !== undefined) {
             throw new IssueError({
-                title: "SubCommand Error: upsertNote",
+                title: "Command Error: createNote",
                 layer: "app",
-                location: "upsertNote()",
+                location: "createNote()",
                 message: `already exists note name, name: ${note.name.value}, id: ${existingNoteIdAsSameName}`,
             });
         }

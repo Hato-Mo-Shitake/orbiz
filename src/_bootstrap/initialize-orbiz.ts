@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-imports -- bootstrap内は許可 */
 
-import { Modal, Plugin } from "obsidian";
+import { MarkdownView, Modal, Plugin } from "obsidian";
+import { ORBIZ } from "../_shared/const";
 import { UiUtilsFacades } from "../_shared/ui-utils-facades";
 import { UtilsFacades } from "../_shared/utils-facades";
 import { ClockImpl } from "../infra/internal/impls/clock";
@@ -46,6 +47,20 @@ export async function initializeOrbiz(
             deps.storeMap,
             deps.ioMap
         );
+
+        const leaves = plugin.app.workspace.getLeavesOfType("markdown");
+        for (const leaf of leaves) {
+            const view = leaf.view;
+            if (!(view instanceof MarkdownView)) continue;
+            const viewEl = view.containerEl;
+            viewEl.addClass("orbiz-view")
+        }
+
+        const activeView = plugin.app.workspace.getActiveViewOfType(MarkdownView);
+        const path = activeView?.file?.path;
+        if (path?.startsWith(ORBIZ)) {
+            deps.storeMap.latestActiveOrbizFileStore.setActivePath(path);
+        }
     } catch (e) {
         let alertMsg = "unknown error";
         if (e instanceof Error) {

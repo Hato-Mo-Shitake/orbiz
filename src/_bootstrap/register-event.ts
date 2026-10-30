@@ -149,14 +149,21 @@ export function registerEvent(
             syncOpenedPaths(storeMap.openedFileStore, ws);
         })
     );
+
     plugin.registerEvent(
         ws.on("active-leaf-change", (leaf) => {
             try {
                 syncOpenedPaths(storeMap.openedFileStore, ws);
+
                 if (leaf?.view instanceof FileView) {
                     const path = leaf.view.file?.path;
-                    if (path) {
+                    if (path?.startsWith(ORBIZ)) {
+
+                        leaf.view.containerEl.addClass("orbiz-view");
+
                         storeMap.latestActiveOrbizFileStore.setActivePath(path);
+
+
                     }
                 }
             } catch (e) {

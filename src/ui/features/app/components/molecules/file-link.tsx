@@ -13,7 +13,7 @@ export const FileLink = ({ label, path, onOpened }: Props) => {
     const resolver = useOrbizResolver();
     const space = useOrbizSpace();
 
-    const existsFile = resolver.existsFile(path.toString());
+    const existsFile = resolver.existsFile(path);
 
     const handleLinkClick = async (evt: MouseEvent) => {
 

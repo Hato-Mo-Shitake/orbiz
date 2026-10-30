@@ -27,7 +27,7 @@ export class ObsidianOrbizResolver implements OrbizResolver {
     existsFile(path: string | Path): boolean {
         // orbiz/ のファイルだけ対象にしてもいいが、一旦。
         const file = this._app.vault.getFileByPath(path.toString());
-        return file !== undefined;
+        return file !== null;
     }
 
     getNote(src: NoteSrc): AnyNote {

@@ -2,6 +2,10 @@
 orbiz
 */
 
+.orbiz-view .metadata-container {
+    display: none !important;
+}
+
 
 /* Button */
 .btn-atom.secondary:hover:not(:disabled) {

@@ -3,13 +3,14 @@ import { AllAnyNoteMetadata, NoteId, NoteKind, NoteName } from "../../../domain/
 // nameとkindは別の更新画面を用意する。
 export type UpdateAnyNoteMetadataRequest = {
     id: NoteId,
+    // kind: NoteKind,
     originalEntryVersion: number, // 整合性を保つために、受け取ったNoteのversionを渡す。
-    metadata: AllAnyNoteMetadata
+    newMetadata: AllAnyNoteMetadata
 }
 
 export type UpdateAnyNoteCoreDataRequest = {
     id: NoteId,
     originalEntryVersion: number,
-    name?: NoteName,
-    kind?: NoteKind,
+    newName?: NoteName,
+    newKind?: NoteKind,
 }

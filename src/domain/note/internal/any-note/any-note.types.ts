@@ -19,7 +19,12 @@ import { NoteKind } from "../note.types";
 import { anyNoteDateKeys, anyNoteSemanticDateKeys, anyNoteSemanticOutlinksKeys } from "./any-note.const";
 
 
-// これだとkind補完が効かなくなる箇所がある -> Omit<AnyNoteEntry, "id" | "createdAt" | "entryModifiedAt" | "path" | "entryVersion"> & { name: NoteName },
+// 以下だとkind補完が効かなくなる箇所がある
+// Omit<AnyNoteEntry, "id" | "createdAt" | "entryModifiedAt" | "path" | "entryVersion"> & { name: NoteName },
+
+/**
+ * New note params for create or update
+ */
 export type NewAnyNoteParams =
     | NewKnowledgeNoteParams | NewGalleryNoteParams | NewCreatoriumParams | NewFaqParams
     | NewTaskNoteParams | NewScheduleNoteParams | NewNoticeNoteParams | NewMemoNoteParams;
@@ -37,6 +42,9 @@ export type NewScheduleNoteParams = NewNoteParams<ScheduleNoteEntry>;
 export type NewNoticeNoteParams = NewNoteParams<NoticeNoteEntry>;
 export type NewMemoNoteParams = NewNoteParams<MemoNoteEntry>;
 
+/**
+ * Any note
+ */
 
 export type AnyNote = AnyMyNote | AnyBoardNote;
 export type AnyNoteSemanticOutlinksKey = typeof anyNoteSemanticOutlinksKeys[number];
@@ -45,16 +53,28 @@ export type AnyNoteSemanticDateKey = typeof anyNoteSemanticDateKeys[number];
 
 export type AnyNoteEntry = AnyMyNoteEntry | AnyBoardNoteEntry;
 
+export type AnyNoteSemanticOutlinksRecord = Record<AnyNoteSemanticOutlinksKey, NoteIdList | undefined>;
+export type AnyNoteSemanticDateRecord = Record<AnyNoteSemanticDateKey, DateTime | null | undefined>;
+export type AnyNoteDateRecord = Record<AnyNoteDateKey, DateTime | null | undefined>
+
+// export type AnyNoteMetadataKey =
+//     | "tags"
+//     | "belongsTo" | "references" | "creators"
+//     | "resolvesAt" | "startedAt" | "dueAt"
+//     | "weight" | "priority";
+
 export type AllAnyNoteMetadata = {
     tags?: NoteTagList,
 
     resolvedAt?: DateTime | null,
     startedAt?: DateTime | null,
     dueAt?: DateTime | null,
+    // semanticDateRecord?: AnyNoteSemanticDateRecord,
 
     belongsTo?: NoteIdList,
     references?: NoteIdList,
     creators?: NoteIdList,
+    // semanticOutlinksRecord?: AnyNoteSemanticOutlinksRecord,
 
     weight?: NoteWeight,
     priority?: NotePriority,
@@ -82,13 +102,15 @@ export type AllAnyEntryDto = {
     priority?: string,
 }
 
-export type NoteWithResolvedAt = Extract<
-    AnyNote,
-    { resolvedAt: DateTime | null }
->;
+// export type NoteWithResolvedAt = Extract<
+//     AnyNote,
+//     { resolvedAt: DateTime | null }
+// >;
 
 
-// filter
+/**
+ * Filter
+ */
 
 type FilterNoteByStateCondition = {
     isTop?: boolean,

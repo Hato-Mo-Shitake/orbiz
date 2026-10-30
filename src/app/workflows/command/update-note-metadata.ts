@@ -1,7 +1,6 @@
 import { IssueError } from "../../../_shared/error";
 import { AsyncCommit, Commit } from "../../../_shared/types";
-import { UtilsFacades } from "../../../_shared/utils-facades";
-import { AllAnyNoteMetadata, AnyNote, AnyNoteDS, AnyNoteEntry, NotePath } from "../../../domain/note";
+import { AnyNote, AnyNoteDS, AnyNoteEntry, NotePath } from "../../../domain/note";
 import { DRecordIo } from "../../io/d-record-io.types";
 import { NoteIo } from "../../io/note-io.types";
 import { EntryModifiedDRecordHistoryStore } from "../../stores/entry-modified-d-record-history-store";
@@ -96,22 +95,8 @@ async function createNewAnyNoteEntry(
         });
     }
 
-    // WARNING: この処理微妙かも、ちゃんとkind分岐して、型通りに組み立てた方がいい。
-    const requestMetadata = request.metadata;
-    const newMetadata: Record<string, unknown> = {};
-
-    for (const key of (Object.keys(requestMetadata) as unknown as (keyof AllAnyNoteMetadata)[])) {
-        if (requestMetadata[key] !== undefined) {
-            newMetadata[key] = requestMetadata[key];
-        }
-    }
-
-    const now = UtilsFacades.clock.nowDateTime();
-
-    return {
-        ...currentNote.getEntry(),
-        ...newMetadata,
-        entryModifiedAt: now,
-        entryVersion: currentNote.entryVersion + 1,
-    }
+    return AnyNoteDS.updateAnyNoteEntry(
+        currentNote,
+        request.newMetadata
+    );
 }

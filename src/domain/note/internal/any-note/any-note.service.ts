@@ -1,5 +1,6 @@
 import { DateTime } from "../../../../_shared/date-time.vo";
 import { IssueError } from "../../../../_shared/error";
+import { UtilsFacades } from "../../../../_shared/utils-facades";
 import { MemoNote } from "../board-note/memo/memo-note";
 import { NoticeNote } from "../board-note/notice/notice-note";
 import { ScheduleNote } from "../board-note/schedule/schedule-note";
@@ -12,7 +13,7 @@ import { NoteIdList } from "../note-id-list.vo";
 import { NoteId } from "../note-id.vo";
 import { NotePath } from "../note-path.vo";
 import { anyNoteDateKeys, anyNoteSemanticOutlinksKeys, isAnyNoteSemanticOutlinksKey } from "./any-note.const";
-import { AllAnyEntryDto, AnyNote, AnyNoteDateKey, AnyNoteEntry, AnyNoteSemanticOutlinksKey, NewAnyNoteParams } from "./any-note.types";
+import { AllAnyEntryDto, AllAnyNoteMetadata, AnyNote, AnyNoteDateKey, AnyNoteEntry, AnyNoteSemanticOutlinksKey, NewAnyNoteParams } from "./any-note.types";
 import { hasCreators, hasDueAt, hasResolvedAt, hasStartedAt } from "./has-note-field.service";
 
 
@@ -39,6 +40,152 @@ export function createNewAnyNoteEntry(
         ...params,
     }
 }
+
+// HACK: 新しいフィールドを追加するたびに、こういうメソッドを修正する必要があるのはどうなんだろうか。
+export function updateAnyNoteEntry(
+    currentNote: AnyNote,
+    newMetadata: AllAnyNoteMetadata
+): AnyNoteEntry {
+    const now = UtilsFacades.clock.nowDateTime();
+    const newVersion = currentNote.entryVersion + 1;
+
+    const tags = newMetadata.tags ?? currentNote.tags;
+    const belongsTo = newMetadata.belongsTo ?? currentNote.belongsTo;
+    const references = newMetadata.references ?? currentNote.references;
+
+    const newBaseMetadata = {
+        tags,
+        belongsTo,
+        references,
+    }
+
+    // if (newMetadata.tags !== undefined) {
+    //     newBaseMetadata["tags"] = newMetadata.tags;
+    // }
+    // if (newMetadata.belongsTo !== undefined) {
+    //     newBaseMetadata["belongsTo"] = newMetadata.belongsTo;
+    // }
+    // if (newMetadata.references !== undefined) {
+    //     newBaseMetadata["references"] = newMetadata.references;
+    // }
+
+    switch (currentNote.kind) {
+        case "knowledge":
+        case "gallery":
+        case "creatorium":
+        case "faq":
+            {
+                // if (newMetadata.weight !== undefined) {
+                //     newBaseMetadata["weight"] = newMetadata.weight
+                // }
+                const weight = newMetadata.weight ?? currentNote.weight;
+                switch (currentNote.kind) {
+                    case "creatorium":
+                    case "knowledge": {
+                        return {
+                            ...currentNote.getEntry(),
+                            ...newBaseMetadata,
+                            weight,
+                            entryModifiedAt: now,
+                            entryVersion: newVersion,
+                        }
+                    }
+                    case "gallery": {
+                        // if (newMetadata.creators !== undefined) {
+                        //     newBaseMetadata.creators = newMetadata.creators;
+                        // }
+                        const creators = newMetadata.creators ?? currentNote.creators;
+                        return {
+                            ...currentNote.getEntry(),
+                            ...newBaseMetadata,
+                            weight,
+                            creators,
+                            entryModifiedAt: now,
+                            entryVersion: newVersion,
+                        }
+                    }
+                    case "faq": {
+                        // if (newMetadata.resolvedAt !== undefined) {
+                        //     newBaseMetadata.resolvedAt = newMetadata.resolvedAt;
+                        // }
+                        const resolvedAt = newMetadata.resolvedAt ?? currentNote.resolvedAt;
+                        return {
+                            ...currentNote.getEntry(),
+                            ...newBaseMetadata,
+                            weight,
+                            resolvedAt,
+                            entryModifiedAt: now,
+                            entryVersion: newVersion,
+                        }
+                    }
+                }
+            }
+            break;
+        case "task":
+        case "schedule":
+        case "memo":
+        case "notice":
+            {
+                // if (newMetadata.priority !== undefined) {
+                //     newBaseMetadata["priority"] = newMetadata.priority
+                // }
+                // if (newMetadata.resolvedAt !== undefined) {
+                //     newBaseMetadata["resolvedAt"] = newMetadata.resolvedAt
+                // }
+                const priority = newMetadata.priority ?? currentNote.priority;
+                const resolvedAt = newMetadata.resolvedAt ?? currentNote.resolvedAt;
+                switch (currentNote.kind) {
+                    case "task": {
+                        // if (newMetadata.startedAt !== undefined && newMetadata.startedAt !== null) {
+                        //     newBaseMetadata.startedAt = newMetadata.startedAt
+                        // }
+                        // if (newMetadata.dueAt !== undefined && newMetadata.dueAt !== null) {
+                        //     newBaseMetadata.dueAt = newMetadata.dueAt;
+                        // }
+                        const startedAt: DateTime = newMetadata.startedAt ?? currentNote.startedAt;
+                        const dueAt: DateTime = newMetadata.dueAt ?? currentNote.dueAt;
+                        return {
+                            ...currentNote.getEntry(),
+                            ...newBaseMetadata,
+                            priority,
+                            resolvedAt,
+                            startedAt,
+                            dueAt,
+                            entryModifiedAt: now,
+                            entryVersion: newVersion,
+                        }
+                    }
+                    case "schedule": {
+                        const startedAt: DateTime = newMetadata.startedAt ?? currentNote.startedAt;
+                        const dueAt: DateTime | null = newMetadata.dueAt ?? currentNote.dueAt;
+                        return {
+                            ...currentNote.getEntry(),
+                            ...newBaseMetadata,
+                            priority,
+                            resolvedAt,
+                            startedAt,
+                            dueAt,
+                            entryModifiedAt: now,
+                            entryVersion: newVersion,
+                        }
+                    }
+                    case "notice":
+                    case "memo": {
+                        return {
+                            ...currentNote.getEntry(),
+                            ...newBaseMetadata,
+                            priority,
+                            resolvedAt,
+                            entryModifiedAt: now,
+                            entryVersion: newVersion,
+                        }
+                    }
+                }
+            }
+    }
+}
+
+
 
 export function removeSemanticOutlinks(removeIds: NoteIdList | NoteId, note: AnyNote): AnyNote {
     let result: AnyNote = note;

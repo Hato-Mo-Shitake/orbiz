@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AnyNote, noteDatesKeysMap, NoteId, NotePriority, NoteWeight } from "../../../../../domain/note";
+import { AnyNote, AnyNoteSemanticDateRecord, noteDatesKeysMap, NoteId, NotePriority, NoteWeight } from "../../../../../domain/note";
 import { useUpdateNoteMetadata } from "../../../../app-hooks/command/use-update-note-metadata";
 import { Button } from "../../../../shared/components/atoms/button";
 import { Divider } from "../../../../shared/components/atoms/divider";
@@ -9,7 +9,7 @@ import { Text } from "../../../../shared/components/atoms/text";
 import { Field } from "../../../../shared/components/molecules/field";
 import { useGetLatestActiveNoteId } from "../../hooks/get/use-get-latest-active-note-id";
 import { useGetNote } from "../../hooks/get/use-get-note";
-import { useGetNoteIdByName } from "../../hooks/get/use-get-note-id-by-name";
+import { useGetNoteIdByName, useGetNoteIdsByName } from "../../hooks/get/use-get-note-id-by-name";
 import { useExtractNoteSemanticDateRecord, useExtractNoteSemanticOutlinkNamesRecord } from "../../hooks/use-extract-from-note";
 import { NoteNameSuggestInput } from "../molecules/note-name-suggest-input";
 import { NotePrioritySelect } from "../molecules/note-priority-select";
@@ -17,7 +17,7 @@ import { NoteSemanticDatesInput } from "../molecules/note-semantic-dates-input";
 import { NoteSemanticOutlinksSelect } from "../molecules/note-semantic-outlinks-select";
 import { NoteTagMultiSelect } from "../molecules/note-tag-multi-select";
 import { NoteWightSelect } from "../molecules/note-weight-select";
-import { AnyNoteSemanticDateRecord, AnyNoteSemanticOutlinkNamesRecord } from "../note.types";
+import { AnyNoteSemanticOutlinkNamesRecord } from "../note.types";
 
 
 type Props = {
@@ -92,6 +92,8 @@ function NoteMetadataForm({
     originalDates,
     onUpdated,
 }: NoteMetadataFormProps) {
+    const getIdsByName = useGetNoteIdsByName();
+
     const [tags, setTags] = useState(() => note.tags);
     const [outlinks, setOutlinks] = useState(() => originalOutlinks);
     const [dates, setDates] = useState(() => originalDates);
@@ -109,8 +111,15 @@ function NoteMetadataForm({
     const update = async () => {
         await updateNote(note.id, note.entryVersion, {
             tags,
-            semanticOutlinkNames: outlinks,
-            semanticDates: dates,
+
+            belongsTo: getIdsByName(outlinks.belongsTo),
+            references: getIdsByName(outlinks.references),
+            creators: getIdsByName(outlinks.creators),
+
+            resolvedAt: dates.resolvedAt,
+            startedAt: dates.startedAt,
+            dueAt: dates.dueAt,
+
             weight,
             priority,
         });

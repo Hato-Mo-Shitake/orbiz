@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-imports -- indexでは無視 */
 
 // import { filterNotes } from "./internal/any-note/any-note-filter.service";
-import { constructNote, createNewAnyNoteEntry, extractNoteDate, extractNoteDateMap, extractNoteDates, extractNoteSemanticOutlinks, extractNoteSemanticOutlinksMap, removeSemanticOutlinks, toAllAnyEntryDto } from "./internal/any-note/any-note.service";
+import { constructNote, createNewAnyNoteEntry, extractNoteDate, extractNoteDateMap, extractNoteDates, extractNoteSemanticOutlinks, extractNoteSemanticOutlinksMap, removeSemanticOutlinks, toAllAnyEntryDto, updateAnyNoteEntry } from "./internal/any-note/any-note.service";
 import { hasCreators, hasDueAt, hasPriority, hasResolvedAt, hasStartedAt, hasWeight } from "./internal/any-note/has-note-field.service";
 
 
@@ -50,13 +50,14 @@ export type { TaskNoteEntry } from "./internal/board-note/task/task-note.types";
  */
 // export type { FilterAnyNoteCondition, FilterBoardNoteCondition, FilterGalleryNoteCondition, FilterKnowledgeNoteCondition, FilterMyNoteCondition, FilterNoteCondition, FilterTaskNoteCondition } from "./internal/any-note/any-note-filter.types";
 export { anyNoteDateKeys, anyNoteSemanticDateKeys, anyNoteSemanticOutlinksKeys, isAnyNoteSemanticOutlinksKey, noteDatesKeysMap, noteSemanticOutlinkKeysMap } from "./internal/any-note/any-note.const";
-export type { AllAnyNoteMetadata, AnyNote, AnyNoteDateKey, AnyNoteEntry, AnyNoteSemanticDateKey, AnyNoteSemanticOutlinksKey, NewAnyNoteParams, NewCreatoriumParams, NewFaqParams, NewGalleryNoteParams, NewKnowledgeNoteParams, NewMemoNoteParams, NewNoticeNoteParams, NewScheduleNoteParams, NewTaskNoteParams, NoteFilter } from "./internal/any-note/any-note.types";
+export type { AllAnyNoteMetadata, AnyNote, AnyNoteDateKey, AnyNoteEntry, AnyNoteSemanticDateKey, AnyNoteSemanticDateRecord, AnyNoteSemanticOutlinksKey, NewAnyNoteParams, NewCreatoriumParams, NewFaqParams, NewGalleryNoteParams, NewKnowledgeNoteParams, NewMemoNoteParams, NewNoticeNoteParams, NewScheduleNoteParams, NewTaskNoteParams, NoteFilter } from "./internal/any-note/any-note.types";
 export { NoteCollection } from "./internal/any-note/note-collection";
 export { NoteTreeCollection } from "./internal/any-note/note-tree-collection";
 // service
 
 export class AnyNoteDS {
     static createNewAnyNoteEntry = createNewAnyNoteEntry;
+    static updateAnyNoteEntry = updateAnyNoteEntry;
     static constructNote = constructNote
 
     static extractNoteSemanticOutlinks = extractNoteSemanticOutlinks;

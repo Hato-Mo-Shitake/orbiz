@@ -1,9 +1,8 @@
 import { useCallback } from "react";
 import { UiUtilsFacades } from "../../../_shared/ui-utils-facades";
 import { CommandMap } from "../../../app/workflows/command/command";
-import { AnyNote, NoteId, NotePriority, NoteTagList, NoteWeight } from "../../../domain/note";
+import { AllAnyNoteMetadata, AnyNote, NoteId } from "../../../domain/note";
 import { useIo, useStore } from "../../context/use-context";
-import { AnyNoteSemanticDateRecord, AnyNoteSemanticOutlinkNamesRecord } from "../../features/note/components/note.types";
 
 export function useUpdateNoteMetadata(
     onUpdated?: (note: AnyNote) => void,
@@ -15,20 +14,14 @@ export function useUpdateNoteMetadata(
     return useCallback(async (
         id: NoteId,
         originalEntryVersion: number,
-        metadata: {
-            tags: NoteTagList,
-            semanticOutlinkNames: AnyNoteSemanticOutlinkNamesRecord,
-            semanticDates: AnyNoteSemanticDateRecord,
-            weight: NoteWeight,
-            priority: NotePriority
-        }
+        newMetadata: AllAnyNoteMetadata,
     ) => {
         try {
             setIsProcessing?.(true);
             const note = await CommandMap.updateNoteMetadata({
                 id,
                 originalEntryVersion,
-                metadata
+                newMetadata
             }, { ...store, ...io });
 
             onUpdated?.(note);

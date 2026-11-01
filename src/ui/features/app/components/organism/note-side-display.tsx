@@ -85,6 +85,7 @@ export const NoteSideDisplay = ({
     }
 
     const handleResolveUnsemanticLink = async (id: NoteId) => {
+        // TODO: SelectInputじゃなくて、普通にボタンを並べた専用のモーダル作った方がいいかも。
         const linkKey = await orbizSpace.modal.openAndGetResult(renderSelectInputModal, {
             title: "Select inlink key",
             options: noteSemanticOutlinkKeysMap[note.kind].map(k => ({ label: k, value: k })),
@@ -106,6 +107,7 @@ export const NoteSideDisplay = ({
                 <NoteLink noteId={note.id} />
             </Field>
 
+            {/* TODO: ここ、create note inlink・outlink みたいにしたいな。あと追加時に選択を消せるように。 */}
             <Button onClick={handleCreateInlinkNote}>create inlink-note</Button>
 
             {

@@ -158,12 +158,10 @@ export function registerEvent(
                 if (leaf?.view instanceof FileView) {
                     const path = leaf.view.file?.path;
                     if (path?.startsWith(ORBIZ)) {
-
                         leaf.view.containerEl.addClass("orbiz-view");
-
                         storeMap.latestActiveOrbizFileStore.setActivePath(path);
-
-
+                    } else {
+                        leaf.view.containerEl.removeClass("orbiz-view");
                     }
                 }
             } catch (e) {

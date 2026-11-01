@@ -19,7 +19,7 @@ import { RenamedFileValidationStore } from "../../stores/renamed-file-store";
 
 
 import { searchNoteByLinkNote } from "../query/search-note-by-link-note";
-import { handleCommand } from "../sub/command/handle-command";
+import { handleCommand } from "../sub-command/handle-command";
 
 type Deps = {
     orbizResolver: OrbizResolver,

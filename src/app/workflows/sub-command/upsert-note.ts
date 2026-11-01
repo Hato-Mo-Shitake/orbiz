@@ -1,10 +1,10 @@
-import { AsyncCommit, Commit } from "../../../../_shared/types";
-import { AnyNote } from "../../../../domain/note";
-import { DRecordIo } from "../../../io/d-record-io.types";
-import { NoteIo } from "../../../io/note-io.types";
-import { EntryModifiedDRecordHistoryStore } from "../../../stores/entry-modified-d-record-history-store";
-import { NoteIndexStore } from "../../../stores/note-index-store";
-import { OrbizSettingStoreReader } from "../../../stores/orbiz-setting-store.types";
+import { AsyncCommit, Commit } from "../../../_shared/types";
+import { AnyNote } from "../../../domain/note";
+import { DRecordIo } from "../../io/d-record-io.types";
+import { NoteIo } from "../../io/note-io.types";
+import { EntryModifiedDRecordHistoryStore } from "../../stores/entry-modified-d-record-history-store";
+import { NoteIndexStore } from "../../stores/note-index-store";
+import { OrbizSettingStoreReader } from "../../stores/orbiz-setting-store.types";
 import { assignNoteToDRecord } from "./assign-note-to-d-record";
 
 type Deps = {

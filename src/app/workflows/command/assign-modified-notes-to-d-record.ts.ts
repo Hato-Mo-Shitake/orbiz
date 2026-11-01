@@ -9,7 +9,7 @@ import { EntryModifiedDRecordHistoryStore } from "../../stores/entry-modified-d-
 import { IssueStore } from "../../stores/issue-store";
 import { LogStore } from "../../stores/log-store";
 import { OrbizSettingStoreReader } from "../../stores/orbiz-setting-store.types";
-import { handleCommand } from "../sub/command/handle-command";
+import { handleCommand } from "../sub-command/handle-command";
 
 export async function assignModifiedNotesToDRecord(
     date: PlainDate,

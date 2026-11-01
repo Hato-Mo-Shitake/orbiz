@@ -5,7 +5,7 @@ import { OrbizResolver } from "../../orbiz-resolver.types";
 import { IssueStore } from "../../stores/issue-store";
 import { LogStore } from "../../stores/log-store";
 import { NoteIndexStoreReader } from "../../stores/note-index-store.types";
-import { handleQuery } from "../sub/query/handle-query";
+import { handleQuery } from "../sub-query/handle-query";
 import { SearchNoteByDateRequest } from "./search-note.types";
 
 type Deps = {

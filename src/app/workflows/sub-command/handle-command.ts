@@ -1,8 +1,8 @@
-import { CommandError } from "../../../../_shared/error";
-import { AsyncCommit, Commit } from "../../../../_shared/types";
-import { UtilsFacades } from "../../../../_shared/utils-facades";
-import { IssueStore } from "../../../stores/issue-store";
-import { LogStore } from "../../../stores/log-store";
+import { CommandError } from "../../../_shared/error";
+import { AsyncCommit, Commit } from "../../../_shared/types";
+import { UtilsFacades } from "../../../_shared/utils-facades";
+import { IssueStore } from "../../stores/issue-store";
+import { LogStore } from "../../stores/log-store";
 
 export async function handleCommand<T>({
     callback, issueStore, logStore, startLogMsg, successLogMsg, errorLogMsg

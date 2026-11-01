@@ -9,9 +9,8 @@ import { IssueStore } from "../../stores/issue-store";
 import { LogStore } from "../../stores/log-store";
 import { NoteIndexStore } from "../../stores/note-index-store";
 import { OrbizSettingStoreReader } from "../../stores/orbiz-setting-store.types";
-import { handleCommand } from "../sub/command/handle-command";
-
-import { upsertNote } from "../sub/command/upsert-note";
+import { handleCommand } from "../sub-command/handle-command";
+import { upsertNote } from "../sub-command/upsert-note";
 import { CreateAnyNoteRequest } from "./create-note.types";
 
 type Deps = {

@@ -1,11 +1,11 @@
-import { IssueError } from "../../../../_shared/error";
-import { AsyncCommit } from "../../../../_shared/types";
-import { UtilsFacades } from "../../../../_shared/utils-facades";
-import { AnyNote, anyNoteDateKeys, AnyNoteDS } from "../../../../domain/note";
-import { DRecord, DRecordId } from "../../../../domain/note-sub/d-record";
+import { IssueError } from "../../../_shared/error";
+import { AsyncCommit } from "../../../_shared/types";
+import { UtilsFacades } from "../../../_shared/utils-facades";
+import { AnyNote, anyNoteDateKeys, AnyNoteDS } from "../../../domain/note";
+import { DRecord, DRecordId } from "../../../domain/note-sub/d-record";
 
-import { DRecordIo } from "../../../io/d-record-io.types";
-import { OrbizSettingStoreReader } from "../../../stores/orbiz-setting-store.types";
+import { DRecordIo } from "../../io/d-record-io.types";
+import { OrbizSettingStoreReader } from "../../stores/orbiz-setting-store.types";
 
 export async function assignNoteToDRecord(
     params: {

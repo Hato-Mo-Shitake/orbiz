@@ -1,7 +1,7 @@
-import { QueryError } from "../../../../_shared/error";
-import { UtilsFacades } from "../../../../_shared/utils-facades";
-import { IssueStore } from "../../../stores/issue-store";
-import { LogStore } from "../../../stores/log-store";
+import { QueryError } from "../../../_shared/error";
+import { UtilsFacades } from "../../../_shared/utils-facades";
+import { IssueStore } from "../../stores/issue-store";
+import { LogStore } from "../../stores/log-store";
 
 export function handleQuery<T>({
     callback, issueStore, logStore, errorLogMsg

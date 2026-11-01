@@ -9,7 +9,7 @@ import { LogStore } from "../../stores/log-store";
 import { NoteIndexStore } from "../../stores/note-index-store";
 import { OrbizSettingStoreReader } from "../../stores/orbiz-setting-store.types";
 import { RenamedFileValidationStore } from "../../stores/renamed-file-store";
-import { handleCommand } from "../sub/command/handle-command";
+import { handleCommand } from "../sub-command/handle-command";
 import { UpdateAnyNoteCoreDataRequest } from "./update-note.types";
 
 
@@ -28,7 +28,7 @@ export async function updateNoteCoreData(
     request: UpdateAnyNoteCoreDataRequest,
     deps: Deps,
 ): Promise<AnyNote> {
-    if (!request.kind && !request.name) {
+    if (!request.newKind && !request.newName) {
         throw new CommandError("Invalid Request: both name and kind is undefined.");
     }
 
@@ -126,12 +126,12 @@ async function createNewAnyNoteEntry(
 
     let newPath = currentNote.path;
 
-    const kind = request.kind
+    const kind = request.newKind
     if (kind) {
         newPath = newPath.withKind(kind)
     }
 
-    const name = request.name;
+    const name = request.newName;
     if (name) {
         newPath = newPath.withName(name);
     }

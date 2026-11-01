@@ -11,8 +11,8 @@ import { LogStore } from "../../stores/log-store";
 import { NoteIndexStore } from "../../stores/note-index-store";
 import { OrbizSettingStoreReader } from "../../stores/orbiz-setting-store.types";
 import { RenamedFileValidationStore } from "../../stores/renamed-file-store";
-import { assignNoteToDRecord } from "../sub/command/assign-note-to-d-record";
-import { handleCommand } from "../sub/command/handle-command";
+import { assignNoteToDRecord } from "../sub-command/assign-note-to-d-record";
+import { handleCommand } from "../sub-command/handle-command";
 import { CreateAnyNoteRequest } from "./create-note.types";
 
 

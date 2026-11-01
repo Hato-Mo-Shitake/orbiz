@@ -31,7 +31,7 @@ function NoteIdWithLinkKeyInputModal({ onSubmit, title, defaultNoteId }: Props) 
     const [noteId, setNoteId] = useState(defaultNoteId);
     const note = noteId ? getNote(noteId) : undefined;
 
-    const [linkKey, setLinkKey] = useState("belongsTo")
+    const [linkKey, setLinkKey] = useState("references")
 
     const handleSubmit = () => {
         if (!isAnyNoteSemanticOutlinksKey(linkKey)) {

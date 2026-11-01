@@ -239,7 +239,8 @@ async function handleNewFileCreatedInbox({
             : undefined;
 
         const rootNoteIdWithLinkKey = await orbizSpace.modal.openAndGetResult(renderNoteIdWithLinkKeyInputModal, {
-            title: `Select note, which outlink to file adapted to new note: ${file.path}`,
+            title: `Select note, which outlink to file:
+            ${file.path}`,
             defaultNoteId: latestActiveNoteId ? NoteId.tryFrom(latestActiveNoteId) : undefined,
             storeMap,
             orbizResolver

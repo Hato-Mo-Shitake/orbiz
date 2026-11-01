@@ -72,13 +72,10 @@ export function adaptFileToNote(
         });
         commitStack.push(assigned.commit);
 
-
-        // noteIndexへの追加してねーじゃん
         const upsert = noteIndexStore.createCommitUpsertNote(
             note
         );
         commitStack.push(upsert);
-
 
         return {
             value: note,

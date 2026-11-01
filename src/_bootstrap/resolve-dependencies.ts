@@ -123,9 +123,9 @@ export async function resolveDependencies(
     /**
      * io
      */
-    const noteIo = new ObsidianNoteIo(plugin.app, orbizFileCache);
-    const dRecordIo = new ObsidianDRecordIo(plugin.app, orbizFileCache);
     const orbizFileIo = new ObsidianOrbizFileIo(plugin.app, noteIndexStore, orbizFileCache);
+    const noteIo = new ObsidianNoteIo(plugin.app, orbizFileCache, orbizFileIo, noteIndexStore);
+    const dRecordIo = new ObsidianDRecordIo(plugin.app, orbizFileCache);
     const ioMap = {
         noteIo,
         dRecordIo,

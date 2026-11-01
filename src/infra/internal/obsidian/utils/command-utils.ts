@@ -19,3 +19,4 @@ export async function createFile(
 
     await vault.create(path.value, content);
 }
+

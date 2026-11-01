@@ -3,6 +3,8 @@ import { IssueError } from "../../../../_shared/error";
 import { Path } from "../../../../_shared/path.vo";
 import { AsyncCommit, Commit } from "../../../../_shared/types";
 import { NoteIo } from "../../../../app/io/note-io.types";
+import { OrbizFileIo } from "../../../../app/io/orbiz-file-io.types";
+import { NoteIndexStore } from "../../../../app/stores/note-index-store";
 import { AnyNote, AnyNoteDS, NotePath } from "../../../../domain/note";
 import { ObsidianOrbizFileCache } from "../orbiz-file-cache";
 import { createFile } from "../utils/command-utils";
@@ -14,11 +16,14 @@ export class ObsidianNoteIo implements NoteIo {
     constructor(
         private readonly _app: App,
         private readonly _orbizFileCache: ObsidianOrbizFileCache,
+        private readonly _orbizFileIo: OrbizFileIo,
+        private readonly _noteIndex: NoteIndexStore,
     ) {
     }
 
     async get(path: NotePath): Promise<AnyNote | undefined> {
         const file = this._app.vault.getFileByPath(path.value);
+
         if (file?.extension !== "md") return undefined;
 
         const fm = this._app.metadataCache.getFileCache(file)?.frontmatter;
@@ -33,7 +38,12 @@ export class ObsidianNoteIo implements NoteIo {
             this._orbizFileCache.setNote(note.path, note);
         });
 
-        const oldNote = await this.get(note.path);
+        // HACK: この設計微妙かも？ やっぱり新規作成と更新のメソッドを分ける？（あるいは、path更新を含むものか否かで分ける。こっちの方がいいかも。）
+        // noteのpath更新があっても、元のpathを取得できるように。
+        const originalPath = this._noteIndex.getPath(note.id);
+        const oldNote = await this.get(
+            NotePath.from(originalPath)
+        );
         if (oldNote) {
             const file = getFile(oldNote.path.value, this._app.vault);
             const newFm = this._getFrontmatterOfNote(note);
@@ -97,8 +107,10 @@ export class ObsidianNoteIo implements NoteIo {
             })
         });
 
+        const rename = await this._orbizFileIo.rename(path, note.path.toPath());
         commitStack.push(async () => {
-            await this._app.fileManager.renameFile(file, note.path.value);
+            await rename();
+            // await this._app.fileManager.renameFile(file, note.path.value);
             // await this._app.vault.rename(file, note.path.value);
         });
 

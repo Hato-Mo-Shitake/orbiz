@@ -27,8 +27,8 @@ export function useUpdateNoteCoreData(
             const note = await CommandMap.updateNoteCoreData({
                 id,
                 originalEntryVersion,
-                name: newName,
-                kind: newKind,
+                newName,
+                newKind,
             }, { ...io, ...store });
 
             onUpdated?.(note);

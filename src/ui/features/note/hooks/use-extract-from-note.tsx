@@ -22,8 +22,8 @@ export function useExtractNoteSemanticOutlinkNamesRecord() {
     return useCallback((note: AnyNote | undefined): AnyNoteSemanticOutlinkNamesRecord => {
         return {
             belongsTo: extractOutlinkNames(note, "belongsTo"),
-            references: extractOutlinkNames(note, "belongsTo"),
-            creators: extractOutlinkNames(note, "belongsTo"),
+            references: extractOutlinkNames(note, "references"),
+            creators: extractOutlinkNames(note, "creators"),
         }
     }, [getNoteNames])
 }

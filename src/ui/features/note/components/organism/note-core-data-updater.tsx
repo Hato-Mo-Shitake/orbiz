@@ -31,18 +31,22 @@ export function NoteCoreDataUpdater({
     const [updateNoteId, setUpdateNoteId] = useState<NoteId | undefined>(
         defaultNoteId ?? getLatestActiveNoteId()
     );
-    const originalNote = getNote(updateNoteId);
+    const [originalNote, setOriginalNote] = useState<AnyNote | undefined>(undefined);
+    // const originalNote = getNote(updateNoteId);
 
-    const [name, setName] = useState(originalNote?.name.value ?? "");
-    const [kind, setKind] = useState<NoteKind>(originalNote?.kind ?? "knowledge");
+    const [name, setName] = useState("");
+    const [kind, setKind] = useState<NoteKind>("knowledge");
 
     // useStateの初期値セットは初回レンダリング時のみ評価されるため
     useEffect(() => {
-        if (originalNote) {
-            setName(originalNote.name.value);
-            setKind(originalNote.kind);
+        // getNoteは新しい異なる参照を返すため。
+        const note = getNote(updateNoteId);
+        setOriginalNote(note);
+        if (note) {
+            setName(note.name.value);
+            setKind(note.kind);
         }
-    }, [originalNote]);
+    }, [updateNoteId, getNote]);
 
     const [isProcessing, setIsProcessing] = useState(false);
 

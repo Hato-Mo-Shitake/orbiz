@@ -52,8 +52,6 @@ export async function handleCommand<T>({
             createdAt: now,
         });
 
-        // これ、IssueErrowを継承すべきだ。layerの情報とか消える。
-        // 違う。UI側でissueStoreに追加してるのが問題なんだ。
         throw new CommandError(
             `${errorLogMsg}
             -> ${errorMsg}`

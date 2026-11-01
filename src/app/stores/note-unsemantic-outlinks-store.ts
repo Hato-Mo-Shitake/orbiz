@@ -7,6 +7,8 @@ import { HandleUnsemanticOutlinksChanged, NoteUnsemanticOutlinksStoreReader } fr
 // インターフェースは分けて、修正の影響が少なく出るようにする。情報はObsidianのメタデータキャッシュで完結する。
 export class NoteUnsemanticOutlinksStore implements NoteUnsemanticOutlinksStoreReader {
     private readonly _listeners: Set<HandleUnsemanticOutlinksChanged> = new Set();
+
+    // HACK: 現状、キャッシュが溜まり続ける、、、
     private readonly _memo: Map<string, NoteIdList> = new Map();
 
     constructor(private readonly _noteIndexStore: NoteIndexStore) { }

@@ -40,10 +40,10 @@ export class ObsidianNoteIo implements NoteIo {
 
         // HACK: この設計微妙かも？ やっぱり新規作成と更新のメソッドを分ける？（あるいは、path更新を含むものか否かで分ける。こっちの方がいいかも。）
         // noteのpath更新があっても、元のpathを取得できるように。
-        const originalPath = this._noteIndex.getPath(note.id);
-        const oldNote = await this.get(
+        const originalPath = this._noteIndex.findPath(note.id);
+        const oldNote = originalPath ? await this.get(
             NotePath.from(originalPath)
-        );
+        ) : undefined;
         if (oldNote) {
             const file = getFile(oldNote.path.value, this._app.vault);
             const newFm = this._getFrontmatterOfNote(note);

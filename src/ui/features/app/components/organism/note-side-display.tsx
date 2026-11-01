@@ -1,6 +1,7 @@
 
 import { useState } from "react"
 import { NoteSrc } from "../../../../../app/orbiz-resolver.types"
+import { CommandMap } from "../../../../../app/workflows/command/command"
 import { AnyNoteSemanticOutlinksKey, anyNoteSemanticOutlinksKeys, NoteId, NoteIdList, noteSemanticOutlinkKeysMap } from "../../../../../domain/note"
 import { useAddNoteOutlink } from "../../../../app-hooks/command/use-add-note-outlink"
 import { useIo, useOrbizResolver, useOrbizSpace, useStore } from "../../../../context/use-context"
@@ -49,6 +50,17 @@ export const NoteSideDisplay = ({
     const unsemanticOutlinks = useNoteUnsemanticOutlinks(note?.id);
     const unsemanticOutlinkNamesWithId = unsemanticOutlinks ? getNamesWithId(unsemanticOutlinks) : unsemanticOutlinks;
 
+    // const [unsemanticOutlinkNamesWithId, setUnsemanticOutlinkNamesWithId] = useState<{ name: string, id: NoteId }[] | undefined>(undefined);
+    // useEffect(() => {
+    //     // TODO: unsemantic周りをリファクタする際に修正。依存配列にnoteを入れてないのは意図的。
+    //           ->結局、unsemanticOutlinksの変化時しか発火しないから意味ない処理だった。
+    //     const result = unsemanticOutlinks
+    //         ? note?.id ? getNamesWithId(unsemanticOutlinks.remove(note.id)) : getNamesWithId(unsemanticOutlinks)
+    //         : undefined;
+    //     setUnsemanticOutlinkNamesWithId(result);
+    // }, [unsemanticOutlinks])
+
+
     if (!note) return <Text variant="error">Not found note: {src.toString()}</Text>
 
     const [treeLinkKey, setTreeLinkKey] = useState("belongsTo");
@@ -84,6 +96,35 @@ export const NoteSideDisplay = ({
         });
     }
 
+    const handleCreateOutlinkNote = async () => {
+        const linkKey = await orbizSpace.modal.openAndGetResult(renderSelectInputModal, {
+            title: "Select outlink key",
+            options: noteSemanticOutlinkKeysMap[note.kind].map(k => ({ label: k, value: k })),
+        });
+        if (linkKey === undefined) {
+            return;
+        }
+
+        orbizSpace.modal.open(renderNoteCreatorModal, {
+            orbizSpace,
+            orbizResolver,
+            storeMap,
+            ioMap,
+            defaultParams: {
+                kind: note.kind,
+            },
+            onCreated: async (outlinkNote) => {
+                // HACK: リファクタ候補。CommandMapに直接依存しないように。
+                await CommandMap.addNoteOutlink({
+                    noteId: note.id,
+                    key: linkKey as AnyNoteSemanticOutlinksKey,
+                    addId: outlinkNote.id
+                }, { ...ioMap, ...storeMap })
+                await orbizSpace.openFile(outlinkNote.path);
+            }
+        });
+    }
+
     const handleResolveUnsemanticLink = async (id: NoteId) => {
         // TODO: SelectInputじゃなくて、普通にボタンを並べた専用のモーダル作った方がいいかも。
         const linkKey = await orbizSpace.modal.openAndGetResult(renderSelectInputModal, {
@@ -107,10 +148,16 @@ export const NoteSideDisplay = ({
                 <NoteLink noteId={note.id} />
             </Field>
 
-            {/* TODO: ここ、create note inlink・outlink みたいにしたいな。あと追加時に選択を消せるように。 */}
-            <Button onClick={handleCreateInlinkNote}>create inlink-note</Button>
 
+
+            {/* TODO: ここ、create note inlink・outlink みたいにしたいな */}
+            <HStack>
+                create link-note:
+                <Button onClick={handleCreateInlinkNote}>inlink</Button>
+                <Button onClick={handleCreateOutlinkNote}>outlink</Button>
+            </HStack>
             {
+                // TODO: 追加時に選択肢を消す。
                 unsemanticOutlinkNamesWithId && <Field label="unsemantic outlinks">
                     <HStack gap={0.5} wrap>
                         {unsemanticOutlinkNamesWithId.map((v) => (

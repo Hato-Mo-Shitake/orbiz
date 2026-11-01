@@ -43,6 +43,7 @@ export function registerEvent(
 
     plugin.registerEvent(
         mc.on("resolve", file => {
+            // HACK: このままだと、unsemanticを解決した時や、内部リンクを消した時に反映されない。
             const fm = mc.getFileCache(file)?.frontmatter;
             if (!fm) return;
             const notePath = NotePath.tryFrom(file.path);
@@ -59,10 +60,31 @@ export function registerEvent(
     plugin.registerEvent(
         mc.on("changed", (file, _, cache) => {
             if (file.path.startsWith(ORBIZ)) {
+                const notePath = NotePath.tryFrom(file.path);
+
+
+
+
+                // const fm = mc.getFileCache(file)?.frontmatter;
+                // if (!fm) return;
+                // // const notePath = NotePath.tryFrom(file.path);
+                // if (!notePath) return;
+                // const note = tryConstructNoteByFm(notePath, fm);
+                // if (!note) return;
+                // const resolvedLinks = mc.resolvedLinks[file.path];
+                // if (!resolvedLinks) return;
+                // const outlinkPaths = Object.keys(resolvedLinks);
+                // storeMap.noteUnsemanticOutlinksStore.update(note, outlinkPaths);
+
+
+
+
+
+
                 // やっぱりパス変更とメタデータ変更は分けて管理したいな。。
                 // Obsidianキャッシュの方が先に更新された時、キャッシュの溜まる原因になる。-> keyをpathにするか？
                 // const noteId = storeMap.noteIndexStore.findIdByPath(file.path);
-                const notePath = NotePath.tryFrom(file.path);
+                // const notePath = NotePath.tryFrom(file.path);
                 if (notePath) {
                     const note = orbizFileCache.findNote(notePath);
                     const fm = cache.frontmatter;

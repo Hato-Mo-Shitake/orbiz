@@ -133,6 +133,7 @@ function NoteMetadataForm({
             <NoteTagMultiSelect
                 tags={tags}
                 onChange={setTags}
+                allowAddNew={true}
             />
         </Field>
         {("weight" in note) && <>

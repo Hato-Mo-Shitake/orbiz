@@ -1,15 +1,14 @@
 import { DateTime } from "../../../../../_shared/date-time.vo"
-import { AnyNoteDateKey, noteDatesKeysMap, NoteKind } from "../../../../../domain/note"
+import { AnyNoteDateKey, AnyNoteSemanticDateRecord, noteDatesKeysMap, NoteKind } from "../../../../../domain/note"
 import { DatetimeInput } from "../../../../shared/components/atoms/datetime-input"
 import { Pill } from "../../../../shared/components/atoms/pill"
 import { HStack, VStack } from "../../../../shared/components/atoms/stack"
 import { Text } from "../../../../shared/components/atoms/text"
 import { Field } from "../../../../shared/components/molecules/field"
-import { AnyNoteSemanticDateRecord } from "../note.types"
 
 type Props = {
     kind: NoteKind,
-    dates: AnyNoteSemanticDateRecord,
+    dates: AnyNoteSemanticDateRecord
     onChange: (dates: AnyNoteSemanticDateRecord) => void,
     originalDates?: AnyNoteSemanticDateRecord
 }
@@ -43,7 +42,7 @@ export const NoteSemanticDatesInput = ({
                         : dateKey
                 }>
                     <DatetimeInput
-                        value={dates[dateKey]}
+                        value={dates[dateKey] || null}
                         onChange={(value) => updateDate(dateKey, value)}
                         enableModeSwitch
                         defaultMode="date"

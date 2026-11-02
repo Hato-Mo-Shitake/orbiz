@@ -6,14 +6,15 @@ import { UiUtilsFacades } from "../_shared/ui-utils-facades";
 import { UtilsFacades } from "../_shared/utils-facades";
 import { ClockImpl } from "../infra/internal/impls/clock";
 import { IdGeneratorImpl } from "../infra/internal/impls/id-generator";
+import { HandleUnload } from "../main";
 import { registerEvent } from "./register-event";
 import { registerUi } from "./register-ui";
 import { registerUiCommand } from "./register-ui-command";
 import { resolveDependencies } from "./resolve-dependencies";
 
-export async function initializeOrbiz(
+export async function loadOrbiz(
     plugin: Plugin
-) {
+): Promise<HandleUnload> {
     try {
         UtilsFacades.initialize({
             clock: new ClockImpl(),
@@ -31,7 +32,7 @@ export async function initializeOrbiz(
             deps.orbizSpace
         );
 
-        registerEvent(
+        const unload = registerEvent(
             deps.storeMap,
             deps.ioMap,
             plugin,
@@ -61,6 +62,10 @@ export async function initializeOrbiz(
         if (path?.startsWith(ORBIZ)) {
             deps.storeMap.latestActiveOrbizFileStore.setActivePath(path);
         }
+
+        return async () => {
+            await unload();
+        }
     } catch (e) {
         let alertMsg = "unknown error";
         if (e instanceof Error) {
@@ -72,6 +77,10 @@ export async function initializeOrbiz(
         modal.setTitle("Error");
         modal.contentEl.setText(`Failed to initialize orbiz: ${alertMsg}`);
         modal.open();
+
+        return async () => {
+
+        }
     }
 }
 

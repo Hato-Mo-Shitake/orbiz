@@ -1,12 +1,11 @@
-import { NoteKind, NoteName, NotePriority, NoteTagList, NoteWeight } from "../../../../../domain/note";
-import { AnyNoteSemanticDateRecord, AnyNoteSemanticOutlinkIdsRecord } from "../note.types";
+import { AnyNoteSemanticDateRecord, AnyNoteSemanticOutlinksRecord, NoteKind, NoteName, NotePriority, NoteTagList, NoteWeight } from "../../../../../domain/note";
 
 
 export type DefaultNoteCreatorParams = {
     name?: NoteName,
     kind?: NoteKind,
     tags?: NoteTagList,
-    semanticOutlinks?: Partial<AnyNoteSemanticOutlinkIdsRecord>,
+    semanticOutlinks?: Partial<AnyNoteSemanticOutlinksRecord>,
     semanticDates?: Partial<AnyNoteSemanticDateRecord>,
     wight?: NoteWeight,
     priority?: NotePriority,

@@ -5,11 +5,13 @@ import { useAllNoteTagList } from "../../hooks/reactive/use-all-note-tag-list";
 type Props = {
     tags: NoteTagList;
     onChange: (tags: NoteTagList) => void;
+    allowAddNew?: boolean
 };
 
 export const NoteTagMultiSelect = ({
     tags,
     onChange,
+    allowAddNew
 }: Props) => {
     const tagList = useAllNoteTagList();
     const tagOptions = tagList.toStringArray();
@@ -19,7 +21,7 @@ export const NoteTagMultiSelect = ({
             options={tagOptions}
             values={tags.toStringArray()}
             onChange={v => onChange(NoteTagList.from(v))}
-            allowAddNew={true}
+            allowAddNew={allowAddNew}
         />
     )
 }

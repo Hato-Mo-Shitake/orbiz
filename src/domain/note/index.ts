@@ -50,7 +50,7 @@ export type { TaskNoteEntry } from "./internal/board-note/task/task-note.types";
  */
 // export type { FilterAnyNoteCondition, FilterBoardNoteCondition, FilterGalleryNoteCondition, FilterKnowledgeNoteCondition, FilterMyNoteCondition, FilterNoteCondition, FilterTaskNoteCondition } from "./internal/any-note/any-note-filter.types";
 export { anyNoteDateKeys, anyNoteSemanticDateKeys, anyNoteSemanticOutlinksKeys, isAnyNoteSemanticOutlinksKey, noteDatesKeysMap, noteSemanticOutlinkKeysMap } from "./internal/any-note/any-note.const";
-export type { AllAnyNoteMetadata, AnyNote, AnyNoteDateKey, AnyNoteEntry, AnyNoteSemanticDateKey, AnyNoteSemanticDateRecord, AnyNoteSemanticOutlinksKey, NewAnyNoteParams, NewCreatoriumParams, NewFaqParams, NewGalleryNoteParams, NewKnowledgeNoteParams, NewMemoNoteParams, NewNoticeNoteParams, NewScheduleNoteParams, NewTaskNoteParams, NoteFilter } from "./internal/any-note/any-note.types";
+export type { AllAnyNoteMetadata, AnyNote, AnyNoteDateKey, AnyNoteEntry, AnyNoteSemanticDateKey, AnyNoteSemanticDateRecord, AnyNoteSemanticOutlinksKey, AnyNoteSemanticOutlinksRecord, NewAnyNoteParams, NewCreatoriumParams, NewFaqParams, NewGalleryNoteParams, NewKnowledgeNoteParams, NewMemoNoteParams, NewNoticeNoteParams, NewScheduleNoteParams, NewTaskNoteParams, NoteFilter } from "./internal/any-note/any-note.types";
 export { NoteCollection } from "./internal/any-note/note-collection";
 export { NoteTreeCollection } from "./internal/any-note/note-tree-collection";
 // service

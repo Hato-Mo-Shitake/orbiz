@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { DateTime } from "../../../../../_shared/date-time.vo";
 import { UiUtilsFacades } from "../../../../../_shared/ui-utils-facades";
 import { CreateAnyNoteRequest } from "../../../../../app/workflows/command/create-note.types";
-import { AnyNoteSemanticDateKey, isBoardNoteKind, isMyNoteKind, noteDatesKeysMap, NoteIdList, NoteKind, NoteName, NotePriority, NoteTagList, NoteWeight } from "../../../../../domain/note";
+import { AnyNoteSemanticDateRecord, isBoardNoteKind, isMyNoteKind, noteDatesKeysMap, NoteIdList, NoteKind, NoteName, NotePriority, NoteTagList, NoteWeight } from "../../../../../domain/note";
 import { useCreateCreateNoteRequest } from "../../../../app-hooks/command/use-create-create-note-request";
 import { Button } from "../../../../shared/components/atoms/button";
 import { Divider } from "../../../../shared/components/atoms/divider";
@@ -37,11 +36,11 @@ export const CreateNoteForm = ({
     const [kind, setKind] = useState<NoteKind>(() => defaultParams?.kind || "knowledge");
     const [tags, setTags] = useState<NoteTagList>(() => defaultParams?.tags || NoteTagList.empty());
     const [outlinks, setOutlinks] = useState<AnyNoteSemanticOutlinkNamesRecord>(() => ({
-        belongsTo: getNoteNames(defaultParams?.semanticOutlinks?.belongsTo || NoteIdList.empty()),
-        references: getNoteNames(defaultParams?.semanticOutlinks?.references || NoteIdList.empty()),
-        creators: getNoteNames(defaultParams?.semanticOutlinks?.creators || NoteIdList.empty()),
+        belongsTo: getNoteNames(defaultParams?.semanticOutlinks?.belongsTo ?? NoteIdList.empty()),
+        references: getNoteNames(defaultParams?.semanticOutlinks?.references ?? NoteIdList.empty()),
+        creators: getNoteNames(defaultParams?.semanticOutlinks?.creators ?? NoteIdList.empty()),
     }));
-    const [dates, setDates] = useState<Record<AnyNoteSemanticDateKey, DateTime | null>>(() => ({
+    const [dates, setDates] = useState<AnyNoteSemanticDateRecord>(() => ({
         resolvedAt: defaultParams?.semanticDates?.resolvedAt || null,
         startedAt: defaultParams?.semanticDates?.startedAt || null,
         dueAt: defaultParams?.semanticDates?.dueAt || null
@@ -112,6 +111,7 @@ export const CreateNoteForm = ({
                 <NoteTagMultiSelect
                     tags={tags}
                     onChange={setTags}
+                    allowAddNew={true}
                 />
             </Field>
 

@@ -21,6 +21,7 @@ import { DRecordPath } from "../domain/note-sub/d-record";
 import { ObsidianOrbizFileCache } from "../infra/internal/obsidian/orbiz-file-cache";
 import { tryConstructNoteByFm } from "../infra/internal/obsidian/utils/construct-note-by-fm";
 import { validateInteger } from "../infra/internal/obsidian/utils/validate-fm-value";
+import { HandleUnload } from "../main";
 import { renderAlertModal } from "../ui/modal/alert-modal";
 import { renderNoteAdaptorModal } from "../ui/modal/note-adaptor-modal";
 import { renderNoteIdWithLinkKeyInputModal } from "../ui/modal/note-id-with-link-key-input-modal";
@@ -34,7 +35,7 @@ export function registerEvent(
     orbizResolver: OrbizResolver,
     orbizSpace: OrbizSpace,
     orbizFileCache: ObsidianOrbizFileCache,
-) {
+): HandleUnload {
     const ws = plugin.app.workspace;
     const mc = plugin.app.metadataCache;
     const vault = plugin.app.vault;
@@ -198,7 +199,6 @@ export function registerEvent(
 
             // 日付変更判定
             storeMap.todayStore.update(today);
-
             // modified note d-recordに追加
             const modifiedNoteIds = NoteIdList.fromStringSet(modifiedNoteIdsForAssignDRecord);
             await CommandMap.assignModifiedNotesToDRecord(
@@ -222,6 +222,20 @@ export function registerEvent(
         // storeMap.openedNoteStore.syncOpenedPaths(paths);
         // storeMap.openedDRecordStore.syncOpenedPaths(paths)
     });
+
+
+    return async () => {
+        const today = UtilsFacades.clock.nowPlainDate();
+
+        // modified note d-recordに追加
+        const modifiedNoteIds = NoteIdList.fromStringSet(modifiedNoteIdsForAssignDRecord);
+        await CommandMap.assignModifiedNotesToDRecord(
+            today,
+            modifiedNoteIds,
+            { ...storeMap, ...ioMap }
+        );
+        modifiedNoteIdsForAssignDRecord.clear();
+    }
 }
 
 /**

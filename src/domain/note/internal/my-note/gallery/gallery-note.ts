@@ -1,3 +1,4 @@
+import { IssueError } from "../../../../../_shared/error";
 import { Note } from "../../note";
 import { NoteIdList } from "../../note-id-list.vo";
 import { MyNote } from "../my-note";
@@ -10,6 +11,16 @@ export class GalleryNote extends MyNote {
 
     protected constructor(entry: GalleryNoteEntry) {
         super(entry);
+
+        if (entry.creators.isEmpty()) {
+            throw new IssueError({
+                title: "Domain Error: GalleryNote",
+                message: "note's creators is empty.",
+                layer: "domain",
+                location: "GalleryNote"
+            });
+        }
+
         this.creators = entry.creators;
         Note._validateKind(entry, this.kind);
         Note._validateSemanticOutlinks(entry.id, entry.creators);

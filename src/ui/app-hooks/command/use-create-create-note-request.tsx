@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { NewCreatoriumParams, NewFaqParams, NewGalleryNoteParams, NewKnowledgeNoteParams, NewMemoNoteParams, NewNoticeNoteParams, NewScheduleNoteParams, NewTaskNoteParams, NoteKind, NoteName, NotePriority, NoteTagList, NoteWeight } from "../../../domain/note";
-import { AnyNoteSemanticDateRecord, AnyNoteSemanticOutlinkNamesRecord } from "../../features/note/components/note.types";
+import { AnyNoteSemanticDateRecord, NewCreatoriumParams, NewFaqParams, NewGalleryNoteParams, NewKnowledgeNoteParams, NewMemoNoteParams, NewNoticeNoteParams, NewScheduleNoteParams, NewTaskNoteParams, NoteKind, NoteName, NotePriority, NoteTagList, NoteWeight } from "../../../domain/note";
+import { AnyNoteSemanticOutlinkNamesRecord } from "../../features/note/components/note.types";
 import { useGetNoteIdsByName } from "../../features/note/hooks/get/use-get-note-id-by-name";
 
 export function useCreateCreateNoteRequest(
@@ -60,7 +60,7 @@ export function useCreateCreateNoteRequest(
                 const request: NewFaqParams = {
                     ...baseRequest,
                     kind: "faq",
-                    resolvedAt: semanticDates.resolvedAt,
+                    resolvedAt: semanticDates.resolvedAt || null,
                     weight,
                 }
                 return request;
@@ -82,7 +82,7 @@ export function useCreateCreateNoteRequest(
                     priority,
                     startedAt,
                     dueAt,
-                    resolvedAt: semanticDates.resolvedAt,
+                    resolvedAt: semanticDates.resolvedAt || null,
                 }
                 return request;
             }
@@ -96,8 +96,8 @@ export function useCreateCreateNoteRequest(
                     kind: "schedule",
                     priority,
                     startedAt,
-                    dueAt: semanticDates.dueAt,
-                    resolvedAt: semanticDates.resolvedAt,
+                    dueAt: semanticDates.dueAt || null,
+                    resolvedAt: semanticDates.resolvedAt || null,
                 }
                 return request;
             }
@@ -105,7 +105,7 @@ export function useCreateCreateNoteRequest(
                 const request: NewNoticeNoteParams = {
                     ...baseRequest,
                     kind: "notice",
-                    resolvedAt: semanticDates.resolvedAt,
+                    resolvedAt: semanticDates.resolvedAt || null,
                     priority,
                 }
                 return request;
@@ -114,7 +114,7 @@ export function useCreateCreateNoteRequest(
                 const request: NewMemoNoteParams = {
                     ...baseRequest,
                     kind: "memo",
-                    resolvedAt: semanticDates.resolvedAt,
+                    resolvedAt: semanticDates.resolvedAt || null,
                     priority,
                 }
                 return request;

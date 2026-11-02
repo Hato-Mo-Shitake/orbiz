@@ -15,7 +15,7 @@ mkdir .obsidian/plugins
 
 ```
 cd .obsidian/plugins
-git https://github.com/Hato-Mo-Shitake/orbiz.git
+git clone https://github.com/Hato-Mo-Shitake/orbiz.git
 ```
 
 `plugins/orbiz`に移動して、コンパイルを行うために `npm install`を実行します。

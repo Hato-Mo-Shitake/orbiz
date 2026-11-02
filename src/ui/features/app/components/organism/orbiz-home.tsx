@@ -22,7 +22,7 @@ export function OrbizHome() {
     return <VStack>
         <Header level={1}>Orbiz Home</Header>
 
-        <Field label="This Week" labelSize="lg">
+        <Field label="Last Week" labelSize="lg">
             <DRecordLink src={today} />
             <List
                 list={thisWeek.toArray().reverse()}
